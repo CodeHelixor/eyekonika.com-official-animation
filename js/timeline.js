@@ -1,27 +1,193 @@
 window.addEventListener("load", () => {
   setTimeout(() => {
+    initTimelineIcons();
     initTimelineReveal();
     initSidebarScrollLock();
     initIntroObserver();
   }, 300);
 });
 
+function initTimelineIcons() {
+  // Hide dots when icon containers are present
+  const items = document.querySelectorAll(".timeline-item");
+  items.forEach((item) => {
+    const iconContainer = item.querySelector(".timeline-icon-container");
+    if (iconContainer) {
+      const dot = item.querySelector(".timeline-dot");
+      if (dot) {
+        dot.style.display = "none";
+      }
+    }
+  });
+}
+
 function initTimelineReveal() {
   const items = document.querySelectorAll(".timeline-item");
+  let animationTimeouts = []; // Track all animation timeouts
+  let isLooping = false;
 
-  const observer = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          obs.unobserve(entry.target);
-        }
+  // Mark all items as visible (no scroll dependency)
+  items.forEach((item) => {
+    item.classList.add("visible");
+  });
+
+  // Function to reset an item's animation
+  function resetItemAnimation(item) {
+    item.classList.remove("complete");
+    const progressLine = item.querySelector(".timeline-progress-line");
+    if (progressLine) {
+      progressLine.style.transition = "height 0s linear";
+      progressLine.style.height = "0px";
+    }
+  }
+
+  // Function to animate a single item forward
+  function animateItem(item) {
+    item.classList.add("complete");
+    
+    const progressLine = item.querySelector(".timeline-progress-line");
+    if (progressLine) {
+      // Reset height to 0 first
+      progressLine.style.transition = "height 0s linear";
+      progressLine.style.height = "0px";
+      
+      // Force reflow
+      void progressLine.offsetHeight;
+      
+      // Animate to full height
+      requestAnimationFrame(() => {
+        progressLine.style.transition = "height 2.5s linear";
+        progressLine.style.height = "calc(100% - 1.25rem + 1.5rem)";
       });
-    },
-    { threshold: 0.25 }
-  );
+    }
+  }
 
-  items.forEach((item) => observer.observe(item));
+  // Function to reverse animate a single item (quickly reset)
+  function reverseAnimateItem(item) {
+    item.classList.remove("complete");
+    
+    const progressLine = item.querySelector(".timeline-progress-line");
+    if (progressLine) {
+      // Quickly animate back to 0 (fast reverse)
+      progressLine.style.transition = "height 0.3s linear";
+      progressLine.style.height = "0px";
+    }
+  }
+
+  // Function to clear all animation timeouts
+  function clearAllTimeouts() {
+    animationTimeouts.forEach(timeout => clearTimeout(timeout));
+    animationTimeouts = [];
+  }
+
+  // Function to start the animation loop
+  function startAnimationLoop() {
+    if (isLooping) return;
+    isLooping = true;
+
+    function runLoop() {
+      // Get all items in order by data-index (excluding last item if it has no progress line)
+      const sortedItems = Array.from(items).filter(item => {
+        // Only include items that have progress line containers
+        return item.querySelector(".timeline-progress-line-container") !== null;
+      }).sort((a, b) => {
+        const indexA = parseInt(a.getAttribute("data-index") || "999");
+        const indexB = parseInt(b.getAttribute("data-index") || "999");
+        return indexA - indexB;
+      });
+
+      if (sortedItems.length === 0) {
+        isLooping = false;
+        return;
+      }
+
+      // Reset all items first
+      sortedItems.forEach(item => resetItemAnimation(item));
+      
+      // Force reflow after reset
+      void document.body.offsetHeight;
+
+      // Animate items sequentially forward - each starts after the previous one completes
+      let currentIndex = 0;
+      
+      function animateNext() {
+        // Check if loop was stopped
+        if (!isLooping) return;
+
+        if (currentIndex >= sortedItems.length) {
+          // All items have been animated forward, wait 2.5s then reverse quickly
+          const timeout = setTimeout(() => {
+            // Check if loop is still active
+            if (isLooping) {
+              reverseAnimation(); // Run reverse animation before restarting
+            } else {
+              isLooping = false;
+            }
+          }, 2500); // Wait 2.5s after last animation completes
+          animationTimeouts.push(timeout);
+          return;
+        }
+
+        const item = sortedItems[currentIndex];
+        animateItem(item);
+        currentIndex++;
+
+        // Wait for this animation to complete (2.5s) before starting next
+        const timeout = setTimeout(() => {
+          animateNext();
+        }, 2500);
+        animationTimeouts.push(timeout);
+      }
+
+      // Function to reverse animate all items quickly (from last to first)
+      function reverseAnimation() {
+        if (!isLooping) return;
+
+        // Create reversed array (last to first)
+        const reversedItems = [...sortedItems].reverse();
+        let reverseIndex = 0;
+
+        function reverseNext() {
+          // Check if loop was stopped
+          if (!isLooping) return;
+
+          if (reverseIndex >= reversedItems.length) {
+            // All items have been reversed, restart the forward loop
+            const timeout = setTimeout(() => {
+              if (isLooping) {
+                runLoop(); // Restart the forward animation loop
+              } else {
+                isLooping = false;
+              }
+            }, 100); // Small delay before restarting
+            animationTimeouts.push(timeout);
+            return;
+          }
+
+          const item = reversedItems[reverseIndex];
+          reverseAnimateItem(item);
+          reverseIndex++;
+
+          // Wait a short time before reversing next item (fast reverse)
+          const timeout = setTimeout(() => {
+            reverseNext();
+          }, 100); // Fast reverse - 100ms between each item
+          animationTimeouts.push(timeout);
+        }
+
+        // Start reverse animation
+        reverseNext();
+      }
+
+      // Start the forward sequence
+      animateNext();
+    }
+
+    runLoop();
+  }
+
+  // Start the animation loop automatically (no scroll dependency)
+  startAnimationLoop();
 }
 
 function initSidebarScrollLock() {

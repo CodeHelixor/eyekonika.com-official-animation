@@ -17,7 +17,7 @@
   top: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(to bottom, #b298ff, #6a4ddd);
+  /* background: linear-gradient(to bottom, #b298ff, #6a4ddd); */
   opacity: 0.35;
   border-radius: 4px;
 }
@@ -61,7 +61,7 @@
 .timeline-items {
   display: flex;
   flex-direction: column;
-  gap: 200px;
+  /* gap: 200px; */
   position: relative;
 }
 
@@ -70,6 +70,7 @@
   display: flex;
   align-items: center;
   gap: 30px;
+  position: relative;
 
   /* hidden initially */
   opacity: 0;
@@ -93,14 +94,122 @@
   flex-direction: row;
 }
 
-/* DOT */
+/* PROGRESS LINE CONTAINER - Bizee.com style, adapted for centered timeline */
+.timeline-progress-line-container {
+  position: absolute;
+  left: 50%;
+  top: 1.25rem; /* Start below the icon (2.5rem / 2 = 1.25rem) */
+  width: 3px;
+  height: calc(100% - 1.25rem + 1.5rem);
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.timeline-progress-line-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 2rem);
+  background: rgba(178, 152, 255, 0.2);
+  border-radius: 2px;
+}
+
+.timeline-progress-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: linear-gradient(to bottom, #b298ff, #6a4ddd);
+  border-radius: 2px;
+  transition: height 2.5s linear;
+  box-shadow: 0 0 10px rgba(178, 152, 255, 0.5);
+}
+
+.timeline-item.complete .timeline-progress-line {
+  height: calc(100% - 1.25rem + 1.5rem);
+}
+
+/* Ensure progress line starts from icon center when icon container exists */
+.timeline-item .timeline-icon-container ~ .timeline-progress-line-container,
+.timeline-item .timeline-progress-line-container:has(~ .timeline-icon-container) {
+  top: 1.25rem;
+}
+
+/* Hide progress line on last item */
+.timeline-item:last-child .timeline-progress-line-container {
+  display: none;
+}
+
+/* ICON CONTAINER - Bizee.com style, positioned at center top */
+.timeline-icon-container {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.timeline-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  min-height: 2.5rem;
+  width: 2.5rem;
+  min-width: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(178, 152, 255, 0.6);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(178, 152, 255, 0.3);
+}
+
+.timeline-icon svg {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.timeline-item.complete .timeline-icon {
+  background: rgba(106, 77, 221, 0.2);
+  color: #b298ff;
+  border-color: #b298ff;
+  box-shadow: 0 0 15px rgba(178, 152, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* DOT - Hide when icon container is present, otherwise show */
 .timeline-dot {
   width: 22px;
   height: 22px;
   background: #b298ff;
   border-radius: 50%;
   box-shadow: 0 0 20px #b298ff;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 2;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
 }
+
+/* Hide dots when icon containers are present (icons replace dots) */
+/* This is handled by JavaScript for better browser compatibility */
+.timeline-item .timeline-icon-container ~ .timeline-dot {
+  display: none;
+}
+
+.timeline-item.complete .timeline-dot {
+  background: #6a4ddd;
+  box-shadow: 0 0 25px #6a4ddd;
+  transform: translateX(-50%) scale(1.1);
+}
+
 .timeline-item.background > .timeline-dot {
   display: none;
 }
@@ -113,6 +222,8 @@
   /* padding: 10px 10px; */
   border-radius: 16px;
   backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
 }
 .card {
   display: flex;
@@ -257,10 +368,18 @@
 
 /* MOBILE */
 @media (max-width: 768px) {
-  /* Hide line & dots */
+  /* Hide line, dots, icons & progress lines */
   .timeline-line,
-  .timeline-dot {
+  .timeline-dot,
+  .timeline-progress-line-container,
+  .timeline-icon-container {
     display: none !important;
+  }
+  
+  /* Ensure progress line animation works on mobile when visible */
+  .timeline-item.complete .timeline-progress-line {
+    height: calc(100% + 200px);
+    opacity: 1;
   }
   @media (max-width: 768px) {
     /* Make the whole card layout centered on mobile */
