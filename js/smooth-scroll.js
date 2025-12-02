@@ -80,7 +80,7 @@ function initParallaxBackgrounds() {
     bgWrapper.className = 'parallax-bg-wrapper';
     bgWrapper.style.cssText = `
       position: absolute;
-      top: 0;
+      top: -210px;
       left: 0;
       width: 100%;
       height: 120%;
