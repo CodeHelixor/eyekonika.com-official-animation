@@ -36,7 +36,8 @@ function initSidebarScrollLock() {
 
   let state = "normal";
 
-  window.addEventListener("scroll", () => {
+  // Use Lenis scroll event if available, otherwise fallback to window scroll
+  const scrollHandler = () => {
     const rect = timeline.getBoundingClientRect();
     const vh = window.innerHeight;
 
@@ -66,7 +67,29 @@ function initSidebarScrollLock() {
       wrapper.classList.remove("expand-wrapper");
       return;
     }
-  });
+  };
+
+  // Check if Lenis is available and use it, otherwise use window scroll
+  // Also check periodically in case lenis loads after this script
+  const setupScrollListener = () => {
+    if (window.lenis) {
+      window.lenis.on('scroll', scrollHandler);
+    } else {
+      window.addEventListener("scroll", scrollHandler);
+      // Try to switch to lenis if it becomes available later
+      const checkLenis = setInterval(() => {
+        if (window.lenis) {
+          window.removeEventListener("scroll", scrollHandler);
+          window.lenis.on('scroll', scrollHandler);
+          clearInterval(checkLenis);
+        }
+      }, 100);
+      // Stop checking after 5 seconds
+      setTimeout(() => clearInterval(checkLenis), 5000);
+    }
+  };
+
+  setupScrollListener();
 }
 
 function initIntroObserver() {
