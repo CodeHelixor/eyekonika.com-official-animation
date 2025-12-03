@@ -1,13 +1,23 @@
 .timeline-section {
   padding-top: 150px;
   padding-bottom: 0px;
-  background: #513d9e;
+  background: #1a1a2e;
+  background-image: url("/images/photo-backgrounds/timeline-background-hq-alt.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed; /* Fallback for browsers without smooth scroll */
   color: white;
   font-family: "Poppins", sans-serif;
   position: relative;
   min-height: 100vh; /* at least full screen */
   height: auto;
   z-index: 10; /* allow shrinking */
+}
+
+/* When smooth scroll is active, background-attachment will be overridden by JS */
+.smooth-scroll-active .timeline-section {
+  background-attachment: scroll;
 }
 
 /* VERTICAL LINE */
@@ -368,6 +378,13 @@
 
 /* MOBILE */
 @media (max-width: 768px) {
+  /* Background adjustments for mobile */
+  .timeline-section {
+    background-attachment: scroll !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+  
   /* Hide line, dots, icons & progress lines */
   .timeline-line,
   .timeline-dot,
@@ -467,5 +484,11 @@
   .container img{
     width: 250px;
   }
-  
+}
+
+/* Tablet and smaller screens - adjust background attachment */
+@media (max-width: 1280px) {
+  .timeline-section {
+    background-attachment: scroll;
+  }
 }
