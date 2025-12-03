@@ -16,7 +16,7 @@ function initSmoothScroll() {
     touchMultiplier: 2,
     infinite: false,
   });
-
+  
   // Export lenis globally
   updateLenisExport();
 

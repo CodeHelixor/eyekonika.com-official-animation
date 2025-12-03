@@ -288,6 +288,12 @@ body.is-preload #sidebar nav ul li {
   opacity: 0;
 }
 
+/* Enhanced float-in animation support */
+#sidebar nav ul li {
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
 @media screen and (max-width: 1280px) {
   #sidebar {
     height: 3.5em;
