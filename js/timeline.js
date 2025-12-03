@@ -4,6 +4,7 @@ window.addEventListener("load", () => {
     initTimelineReveal();
     initSidebarScrollLock();
     initIntroObserver();
+    initTimelineCardHover();
   }, 300);
 });
 
@@ -278,4 +279,20 @@ function initIntroObserver() {
   );
 
   observer.observe(intro);
+}
+
+function initTimelineCardHover() {
+  const timelineCards = document.querySelectorAll(".timeline-card");
+  
+  timelineCards.forEach((card) => {
+    const img = card.querySelector(".img-date img");
+    if (img && img.src) {
+      // Set CSS custom property for the hover image
+      card.style.setProperty("--hover-image", `url(${img.src})`);
+      
+      // Preload the image for smoother animation
+      const preloadImg = new Image();
+      preloadImg.src = img.src;
+    }
+  });
 }
