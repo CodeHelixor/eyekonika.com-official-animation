@@ -22,16 +22,7 @@
 
 /* VERTICAL LINE */
 .timeline-line {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: rgba(178, 152, 255, 0.2);
-  opacity: 0.35;
-  border-radius: 4px;
-  transform: translateX(-50%);
-  z-index: 0;
+  display: none;
 }
 .timeline-item.background {
   padding-top: 140px;
@@ -104,12 +95,7 @@
 
 /* PROGRESS LINE CONTAINER - Bizee.com style, adapted for centered timeline */
 .timeline-progress-line-container {
-  position: absolute;
-  left: 50%;
-  width: 5px;
-  transform: translateX(-50%);
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 /* For all items except last, connect from icon center bottom to next icon center top */
@@ -223,6 +209,10 @@
 }
 
 .timeline-item.background > .timeline-dot {
+  display: none;
+}
+
+.timeline-item.background > .timeline-icon-container {
   display: none;
 }
 
@@ -351,9 +341,7 @@
   border-radius: 10px;
 }
 .backImage{
-  width: 100%;
-  background-color: black;
-  position: relative;
+  display: none;
 }
 .item{
   position: absolute;
@@ -836,16 +824,7 @@
 
 /* VERTICAL LINE */
 .timeline-line {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: rgba(178, 152, 255, 0.2);
-  opacity: 0.35;
-  border-radius: 4px;
-  transform: translateX(-50%);
-  z-index: 0;
+  display: none;
 }
 .timeline-item.background {
   padding-top: 140px;
@@ -918,12 +897,7 @@
 
 /* PROGRESS LINE CONTAINER - Bizee.com style, adapted for centered timeline */
 .timeline-progress-line-container {
-  position: absolute;
-  left: 50%;
-  width: 5px;
-  transform: translateX(-50%);
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 /* For all items except last, connect from icon center bottom to next icon center top */
@@ -971,36 +945,24 @@
 
 /* CONNECTING LINES FROM ICONS TO CARDS */
 .timeline-item::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  height: 5px;
-  width: 10%;
-  background: rgba(178, 152, 255, 0.4);
-  z-index: 1;
-  pointer-events: none;
-  transition: all 0.3s ease;
-  transform: translateY(-50%);
+  display: none;
 }
 
 /* Left items: line from icon (center) to right edge of left card */
 /* Cards are 42% wide, with 6% padding on left items, card right edge is at ~48% */
 .timeline-item.left::before {
-  left: calc(50% + 1.25rem); /* Start from icon right edge (icon radius = 1.25rem = 20px) */
-  right: 48%; /* End at card right edge (6% padding + 42% card width) */
+  display: none;
 }
 
 /* Right items: line from icon (center) to left edge of right card */
 /* Cards are 42% wide, with 6% padding on right items, card left edge is at ~52% */
 .timeline-item.right::before {
-  left: 52%; /* Start from card left edge (50% center + 2% gap) */
-  right: calc(50% + 1.25rem); /* End at icon left edge */
+  display: none;
 }
 
 /* Enhanced line on hover */
 .timeline-item:hover::before {
-  background: rgba(178, 152, 255, 0.7);
-  box-shadow: 0 0 8px rgba(178, 152, 255, 0.5);
+  display: none;
 }
 
 /* ICON CONTAINER - Bizee.com style, positioned at vertical center */
@@ -1071,6 +1033,10 @@
 }
 
 .timeline-item.background > .timeline-dot {
+  display: none;
+}
+
+.timeline-item.background > .timeline-icon-container {
   display: none;
 }
 
@@ -1199,9 +1165,7 @@
   border-radius: 10px;
 }
 .backImage{
-  width: 100%;
-  background-color: black;
-  position: relative;
+  display: none;
 }
 .item{
   position: absolute;
