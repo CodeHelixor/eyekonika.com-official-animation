@@ -155,6 +155,820 @@
   display: none;
 }
 
+/* ICON CONTAINER - Bizee.com style, positioned at vertical center */
+.timeline-icon-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.timeline-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  min-height: 2.5rem;
+  width: 2.5rem;
+  min-width: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(178, 152, 255, 0.6);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(178, 152, 255, 0.3);
+}
+
+.timeline-icon svg {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.timeline-item.complete .timeline-icon {
+  background: rgba(106, 77, 221, 0.2);
+  color: #b298ff;
+  border-color: #b298ff;
+  box-shadow: 0 0 15px rgba(178, 152, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* DOT - Hide when icon container is present, otherwise show */
+.timeline-dot {
+  width: 22px;
+  height: 22px;
+  background: #b298ff;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #b298ff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Hide dots when icon containers are present (icons replace dots) */
+/* This is handled by JavaScript for better browser compatibility */
+.timeline-item .timeline-icon-container ~ .timeline-dot {
+  display: none;
+}
+
+.timeline-item.complete .timeline-dot {
+  background: #6a4ddd;
+  box-shadow: 0 0 25px #6a4ddd;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.timeline-item.background > .timeline-dot {
+  display: none;
+}
+
+/* CARD - Modern Glassmorphism Design */
+.timeline-card {
+  width: 42%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(178, 152, 255, 0.3);
+  border-radius: 24px;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  position: relative;
+  z-index: 1;
+  padding: 0;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: visible;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle gradient overlay for depth */
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(178, 152, 255, 0.05) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.timeline-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(178, 152, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(178, 152, 255, 0.5);
+  z-index: 100;
+}
+
+.timeline-card:hover::before {
+  opacity: 1;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.btn-container > a {
+  min-width: 140px;
+}
+
+.timeline-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #7e43d1 0%, #6a4ddd 100%);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0;
+  box-shadow: 
+    0 4px 12px rgba(126, 67, 209, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.timeline-btn:hover::before {
+  left: 100%;
+}
+
+.timeline-btn:hover {
+  background: linear-gradient(135deg, #3a76e0 0%, #2d5fc7 100%);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 20px rgba(58, 118, 224, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.container{
+  gap: 10px;
+  perspective: 500px;
+  height: 600px;
+  transition: 1.2s ease;
+  transform: scale(0.9);
+  background-color: black;;
+  width: 30%;
+  margin: auto;
+}
+.container img{
+  width: 30vw;
+  height: 30vh;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.backImage{
+  width: 100%;
+  background-color: black;
+  position: relative;
+}
+.item{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.4s ease;
+  cursor: pointer; 
+}
+.item-1{
+  z-index: 3;
+}
+.item-2{
+  transform: translate(-50%, -70%) scale(0.9);
+  z-index: 2;
+}
+.item-3{
+  transform: translate(-50%, -90%) scale(0.8);
+  z-index: 1;
+}
+.container:hover{
+  transform: scale(1);
+}
+.container:hover .item-1{
+  transform: translate(-80%, -50%) scale(1) rotateY(-40deg);
+}
+.container:hover .item-2{
+  transform: translate(-60%, -50%) scale(0.9) rotateY(-40deg);
+}
+.container:hover .item-3{
+  transform: translate(-40%, -50%) scale(0.9) rotateY(-40deg);
+}
+.item:hover{
+  margin-top: -50px;
+}
+
+.img-date {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.img-date > div {
+  flex: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  min-width: 0; /* Allow text to wrap properly */
+}
+
+.btn-container {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.img-date img {
+  width: 160px;
+  min-width: 160px;
+  height: 160px;
+  border-radius: 20px;
+  object-fit: cover;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 0 2px rgba(178, 152, 255, 0.2);
+  background: rgba(178, 152, 255, 0.1);
+}
+
+/* Note: The ::before pseudo-element is now used for gradient overlay above */
+
+/* Expanded image container - Base styles */
+.timeline-card::after {
+  content: '';
+  position: fixed;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background-image: var(--hover-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 28px;
+  box-shadow: 
+    0 25px 70px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(178, 152, 255, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 11;
+  pointer-events: none;
+  border: 3px solid rgba(178, 152, 255, 0.4);
+  backdrop-filter: blur(2px);
+}
+
+/* Left timeline items - show image on the LEFT side of center */
+.timeline-item.left .timeline-card::after {
+  top: 10%;
+  right: calc(50% + 400px);
+  left: auto;
+  transform: translateY(-50%) scale(0.7) rotateY(10deg);
+}
+
+.timeline-item.left .timeline-card:hover::after {
+  width: min(40vw, 500px);
+  height: min(55vh, 450px);
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) scale(1) rotateY(0deg);
+  box-shadow: 
+    0 40px 100px rgba(0, 0, 0, 0.75),
+    0 0 60px rgba(178, 152, 255, 0.6),
+    0 0 0 1px rgba(178, 152, 255, 0.3);
+  border-color: rgba(178, 152, 255, 0.7);
+}
+
+/* Right timeline items - show image on the RIGHT side of center */
+.timeline-item.right .timeline-card::after {
+  top: 10%;
+  left: calc(50% + 400px);
+  right: auto;
+  transform: translateY(-50%) scale(0.7) rotateY(-10deg);
+}
+
+.timeline-item.right .timeline-card:hover::after {
+  width: min(40vw, 500px);
+  height: min(55vh, 450px);
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) scale(1) rotateY(0deg);
+  box-shadow: 
+    0 40px 100px rgba(0, 0, 0, 0.75),
+    0 0 60px rgba(178, 152, 255, 0.6),
+    0 0 0 1px rgba(178, 152, 255, 0.3);
+  border-color: rgba(178, 152, 255, 0.7);
+}
+
+/* Fade out text content on hover (but keep button visible) */
+.timeline-card:hover .img-date > div {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Keep button visible and enhance it on hover */
+.timeline-card:hover .btn-container {
+  opacity: 1 !important;
+  transform: none;
+  z-index: 13;
+  position: relative;
+}
+
+/* Enhance button visibility on card hover */
+.timeline-card:hover .timeline-btn {
+  opacity: 1;
+  transform: scale(1.08) translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced image hover effect */
+.timeline-card:hover .img-date img {
+  transform: scale(1.1) translateZ(0);
+  box-shadow: 
+    0 12px 40px rgba(178, 152, 255, 0.5),
+    0 0 0 3px rgba(178, 152, 255, 0.4);
+  z-index: 12;
+  border-radius: 24px;
+}
+.img-date .timeline-card > img {
+  width: 200px;
+  height: 200px;
+}
+
+.timeline-card h3 {
+  color: #e8dfff;
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.timeline-card h3 p {
+  color: #cdbaff;
+  margin-bottom: 10px;
+}
+
+.timeline-card p {
+  color: #e0e0e0;
+  line-height: 1.7;
+  font-size: 0.98rem;
+  margin: 0;
+}
+
+/* TABLET FIX — keep layout same but scale everything down */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Make cards narrower so whole block looks smaller */
+  .timeline-card {
+    width: 38% !important;
+  }
+
+  .card {
+    padding: 24px !important;
+    gap: 18px !important;
+  }
+
+  /* Make image visibly smaller */
+  .img-date {
+    gap: 16px !important;
+  }
+
+  .img-date img {
+    width: 120px !important;
+    min-width: 120px !important;
+    height: 120px !important;
+  }
+
+  /* Slightly reduce text size */
+  .timeline-card h3 {
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .timeline-card p {
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Ensure icons stay centered on tablet */
+  .timeline-icon-container {
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* Ensure progress lines connect on tablet with centered icons */
+  .timeline-item:not(:last-child) .timeline-progress-line-container {
+    top: calc(50% + 1.25rem) !important;
+    bottom: calc(-50% + 1.25rem) !important;
+    height: auto !important;
+  }
+
+  /* Last item progress line on tablet */
+  .timeline-item:last-child .timeline-progress-line-container {
+    top: calc(50% + 1.25rem) !important;
+    bottom: 0 !important;
+  }
+
+  /* Adjust hover image size and positioning for tablet */
+  .timeline-item.left .timeline-card:hover::after {
+    width: min(35vw, 450px);
+    height: min(50vh, 400px);
+    right: calc(50% + 40px);
+    left: auto;
+  }
+  
+  .timeline-item.right .timeline-card:hover::after {
+    width: min(35vw, 450px);
+    height: min(50vh, 400px);
+    left: calc(50% + 40px);
+    right: auto;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  /* Background adjustments for mobile */
+  .timeline-section {
+    background-attachment: scroll !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+  
+  /* Fix background attachment for timeline items with backgrounds */
+  .timeline-item.background {
+    background-attachment: scroll !important;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+  
+  /* Fix background attachment for .background class */
+  .background {
+    background-attachment: scroll !important;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+  
+  /* Hide only dots, keep icons and lines visible for connection */
+  .timeline-dot {
+    display: none !important;
+  }
+  
+  /* Ensure timeline line is visible and spans correctly on mobile */
+  .timeline-line {
+    display: block !important;
+    height: 100% !important;
+  }
+
+  /* Ensure icons stay centered on mobile */
+  .timeline-icon-container {
+    display: block !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* Ensure progress lines connect on mobile with centered icons */
+  .timeline-item:not(:last-child) .timeline-progress-line-container {
+    display: block !important;
+    top: calc(50% + 1.25rem) !important;
+    bottom: calc(-50% + 1.25rem) !important;
+    height: auto !important;
+  }
+
+  /* Last item progress line on mobile */
+  .timeline-item:last-child .timeline-progress-line-container {
+    top: calc(50% + 1.25rem) !important;
+    bottom: 0 !important;
+  }
+
+  /* Ensure progress line animation works on mobile */
+  .timeline-item.complete .timeline-progress-line {
+    height: 100%;
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    /* Make the whole card layout centered on mobile */
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 14px;
+      width: 100%;
+    }
+
+    /* Center button container */
+    .btn-container {
+      width: 100%;
+      display: flex;
+      justify-content: center !important;
+      align-items: center !important;
+    }
+
+    /* Make the button centered */
+    .btn-container > button {
+      margin: 0 auto !important;
+      display: block;
+      padding: 0;
+    }
+  }
+
+  /* Column layout */
+  .timeline-item {
+    flex-direction: column !important;
+    align-items: center !important; /* center the whole item */
+    text-align: center !important;
+    gap: 20px;
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+
+  /* Card smaller + centered */
+  .timeline-card {
+    width: 90% !important; /* slightly wider for better mobile UX */
+    margin: 0 auto !important; /* centered */
+  }
+
+  .card {
+    padding: 24px !important;
+    gap: 18px !important;
+  }
+
+  /* Image stacked on top */
+  .img-date {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* center image + text */
+    gap: 16px !important;
+  }
+
+  .img-date img {
+    float: none !important;
+    width: 140px !important;
+    min-width: 140px !important;
+    height: 140px !important;
+    margin: 0 !important;
+  }
+
+  /* Text below image */
+  .img-date div {
+    width: 100%;
+    text-align: center !important;
+  }
+
+  /* Font adjustments */
+  .timeline-card h3 {
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+  }
+  .timeline-card p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Reduce spacing between items */
+  .timeline-items {
+    gap: 100px !important;
+  }
+
+  /* Background block also centered */
+  .timeline-item.background {
+    padding: 20px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Disable all hover effects on mobile - hide pseudo-elements */
+  .timeline-card::before,
+  .timeline-card::after {
+    display: none !important;
+  }
+
+  /* Disable card hover transform on mobile */
+  .timeline-card:hover {
+    transform: none !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
+    z-index: 1 !important;
+  }
+
+  /* Keep text visible on mobile (no hover effects) */
+  .timeline-card:hover .img-date > div,
+  .timeline-card:hover .btn-container {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Disable image hover effect on mobile */
+  .timeline-card:hover .img-date img {
+    transform: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .container img{
+    width: 250px;
+  }
+}
+
+/* Tablet and smaller screens - adjust background attachment */
+@media (max-width: 1280px) {
+  .timeline-section {
+    background-attachment: scroll;
+  }
+}
+
+.timeline-section {
+  padding-top: 150px;
+  padding-bottom: 0px;
+  background: #1a1a2e;
+  background-image: url("/images/photo-backgrounds/timeline-background-dark.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed; /* Fallback for browsers without smooth scroll */
+  color: white;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  min-height: 100vh; /* at least full screen */
+  height: auto;
+  z-index: 10; /* allow shrinking */
+}
+
+/* When smooth scroll is active, background-attachment will be overridden by JS */
+.smooth-scroll-active .timeline-section {
+  background-attachment: scroll;
+}
+
+/* VERTICAL LINE */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(178, 152, 255, 0.2);
+  opacity: 0.35;
+  border-radius: 4px;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+.timeline-item.background {
+  padding-top: 140px;
+  padding-bottom: 140px;
+
+  background-size: 100% 170%;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.background {
+  position: relative;
+  overflow: hidden;
+  background-image: url("/images/photo-backgrounds/pexels-apasaric-325185.jpg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 500px;
+}
+.timeline-item.left.background.visible{
+  height: 700px;
+}
+.scroll-anchor {
+  height: 80px;  /* adjust depending on header height */
+  margin-top: -80px;
+}
+/* ITEM WRAPPER */
+.timeline-items {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+/* ITEM */
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  min-height: 200px;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  margin: 0;
+  margin-bottom: 0;
+
+  /* hidden initially */
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s ease;
+}
+
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+  padding-left: 6%;
+}
+
+/* LEFT / RIGHT */
+.timeline-item.left {
+  padding-right: 6%;
+  flex-direction: row-reverse;
+}
+
+.timeline-item.right {
+  flex-direction: row;
+}
+
+/* PROGRESS LINE CONTAINER - Bizee.com style, adapted for centered timeline */
+.timeline-progress-line-container {
+  position: absolute;
+  left: 50%;
+  width: 5px;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* For all items except last, connect from icon center bottom to next icon center top */
+.timeline-item:not(:last-child) .timeline-progress-line-container {
+  top: calc(50% + 1.25rem); /* Start from current icon bottom (icon centered at 50%, icon height 2.5rem, so bottom = 50% + 1.25rem) */
+  bottom: calc(-50% + 1.25rem); /* Extend to next item's icon top (next icon centered at 50%, icon height 2.5rem, so top = 50% - 1.25rem) */
+}
+
+/* For last item, line extends downward from icon center */
+.timeline-item:last-child .timeline-progress-line-container {
+  top: calc(50% + 1.25rem); /* Start from icon bottom */
+  bottom: 0; /* Extend to item bottom */
+}
+
+.timeline-progress-line-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(178, 152, 255, 0.2);
+  border-radius: 2px;
+}
+
+.timeline-progress-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: linear-gradient(to bottom, #b298ff, #6a4ddd);
+  border-radius: 2px;
+  transition: height 2.5s linear;
+  box-shadow: 0 0 10px rgba(178, 152, 255, 0.5);
+}
+
+.timeline-item.complete .timeline-progress-line {
+  height: 100%;
+}
+
+/* Hide progress line on last item */
+.timeline-item:last-child .timeline-progress-line-container {
+  display: none;
+}
+
 /* CONNECTING LINES FROM ICONS TO CARDS */
 .timeline-item::before {
   content: '';
