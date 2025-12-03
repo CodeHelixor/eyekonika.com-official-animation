@@ -27,9 +27,11 @@
   top: 0;
   width: 4px;
   height: 100%;
-  /* background: linear-gradient(to bottom, #b298ff, #6a4ddd); */
+  background: rgba(178, 152, 255, 0.2);
   opacity: 0.35;
   border-radius: 4px;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 .timeline-item.background {
   padding-top: 140px;
@@ -61,8 +63,9 @@
 .timeline-items {
   display: flex;
   flex-direction: column;
-  /* gap: 200px; */
   position: relative;
+  padding: 0;
+  margin: 0;
 }
 
 /* ITEM */
@@ -71,6 +74,11 @@
   align-items: center;
   gap: 30px;
   position: relative;
+  min-height: 200px;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  margin: 0;
+  margin-bottom: 0;
 
   /* hidden initially */
   opacity: 0;
@@ -98,12 +106,22 @@
 .timeline-progress-line-container {
   position: absolute;
   left: 50%;
-  top: 20.25rem; /* Start below the icon (2.5rem / 2 = 1.25rem) */
-  width: 30px;
-  height: calc(100% - 1.25rem + 1.5rem);
+  width: 5px;
   transform: translateX(-50%);
   z-index: 0;
   pointer-events: none;
+}
+
+/* For all items except last, connect from icon center bottom to next icon center top */
+.timeline-item:not(:last-child) .timeline-progress-line-container {
+  top: calc(50% + 1.25rem); /* Start from current icon bottom (icon centered at 50%, icon height 2.5rem, so bottom = 50% + 1.25rem) */
+  bottom: calc(-50% + 1.25rem); /* Extend to next item's icon top (next icon centered at 50%, icon height 2.5rem, so top = 50% - 1.25rem) */
+}
+
+/* For last item, line extends downward from icon center */
+.timeline-item:last-child .timeline-progress-line-container {
+  top: calc(50% + 1.25rem); /* Start from icon bottom */
+  bottom: 0; /* Extend to item bottom */
 }
 
 .timeline-progress-line-bg {
@@ -111,7 +129,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% + 2rem);
+  height: 100%;
   background: rgba(178, 152, 255, 0.2);
   border-radius: 2px;
 }
@@ -129,13 +147,7 @@
 }
 
 .timeline-item.complete .timeline-progress-line {
-  height: calc(100% - 1.25rem + 1.5rem);
-}
-
-/* Ensure progress line starts from icon center when icon container exists */
-.timeline-item .timeline-icon-container ~ .timeline-progress-line-container,
-.timeline-item .timeline-progress-line-container:has(~ .timeline-icon-container) {
-  top: 1.25rem;
+  height: 100%;
 }
 
 /* Hide progress line on last item */
@@ -143,12 +155,46 @@
   display: none;
 }
 
-/* ICON CONTAINER - Bizee.com style, positioned at center top */
+/* CONNECTING LINES FROM ICONS TO CARDS */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 5px;
+  width: 10%;
+  background: rgba(178, 152, 255, 0.4);
+  z-index: 1;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  transform: translateY(-50%);
+}
+
+/* Left items: line from icon (center) to right edge of left card */
+/* Cards are 42% wide, with 6% padding on left items, card right edge is at ~48% */
+.timeline-item.left::before {
+  left: calc(50% + 1.25rem); /* Start from icon right edge (icon radius = 1.25rem = 20px) */
+  right: 48%; /* End at card right edge (6% padding + 42% card width) */
+}
+
+/* Right items: line from icon (center) to left edge of right card */
+/* Cards are 42% wide, with 6% padding on right items, card left edge is at ~52% */
+.timeline-item.right::before {
+  left: 52%; /* Start from card left edge (50% center + 2% gap) */
+  right: calc(50% + 1.25rem); /* End at icon left edge */
+}
+
+/* Enhanced line on hover */
+.timeline-item:hover::before {
+  background: rgba(178, 152, 255, 0.7);
+  box-shadow: 0 0 8px rgba(178, 152, 255, 0.5);
+}
+
+/* ICON CONTAINER - Bizee.com style, positioned at vertical center */
 .timeline-icon-container {
   position: absolute;
   left: 50%;
-  /* top: 0; */
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
   flex-shrink: 0;
 }
@@ -191,8 +237,8 @@
   box-shadow: 0 0 20px #b298ff;
   position: absolute;
   left: 50%;
-  top: 0;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
   transition: all 0.3s ease;
   flex-shrink: 0;
@@ -207,7 +253,7 @@
 .timeline-item.complete .timeline-dot {
   background: #6a4ddd;
   box-shadow: 0 0 25px #6a4ddd;
-  transform: translateX(-50%) scale(1.1);
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
 .timeline-item.background > .timeline-dot {
@@ -572,9 +618,23 @@
     line-height: 1.6 !important;
   }
 
-  /* Reduce spacing between items (tablet is shorter) */
-  .timeline-items {
-    gap: 110px !important;
+  /* Ensure icons stay centered on tablet */
+  .timeline-icon-container {
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* Ensure progress lines connect on tablet with centered icons */
+  .timeline-item:not(:last-child) .timeline-progress-line-container {
+    top: calc(50% + 1.25rem) !important;
+    bottom: calc(-50% + 1.25rem) !important;
+    height: auto !important;
+  }
+
+  /* Last item progress line on tablet */
+  .timeline-item:last-child .timeline-progress-line-container {
+    top: calc(50% + 1.25rem) !important;
+    bottom: 0 !important;
   }
 
   /* Adjust hover image size and positioning for tablet */
@@ -590,6 +650,15 @@
     height: min(50vh, 400px);
     left: calc(50% + 40px);
     right: auto;
+  }
+
+  /* Adjust connecting lines for tablet - cards are 38% wide, positioned similarly */
+  .timeline-item.left::before {
+    right: 47%; /* Adjusted for 38% card width with padding */
+  }
+
+  .timeline-item.right::before {
+    left: 53%; /* Adjusted for 38% card width with padding */
   }
 }
 
@@ -616,19 +685,44 @@
     background-position: center center !important;
   }
   
-  /* Hide line, dots, icons & progress lines */
-  .timeline-line,
-  .timeline-dot,
-  .timeline-progress-line-container,
-  .timeline-icon-container {
+  /* Hide only dots, keep icons and lines visible for connection */
+  .timeline-dot {
     display: none !important;
   }
   
-  /* Ensure progress line animation works on mobile when visible */
+  /* Ensure timeline line is visible and spans correctly on mobile */
+  .timeline-line {
+    display: block !important;
+    height: 100% !important;
+  }
+
+  /* Ensure icons stay centered on mobile */
+  .timeline-icon-container {
+    display: block !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* Ensure progress lines connect on mobile with centered icons */
+  .timeline-item:not(:last-child) .timeline-progress-line-container {
+    display: block !important;
+    top: calc(50% + 1.25rem) !important;
+    bottom: calc(-50% + 1.25rem) !important;
+    height: auto !important;
+  }
+
+  /* Last item progress line on mobile */
+  .timeline-item:last-child .timeline-progress-line-container {
+    top: calc(50% + 1.25rem) !important;
+    bottom: 0 !important;
+  }
+
+  /* Ensure progress line animation works on mobile */
   .timeline-item.complete .timeline-progress-line {
-    height: calc(100% + 200px);
+    height: 100%;
     opacity: 1;
   }
+
   @media (max-width: 768px) {
     /* Make the whole card layout centered on mobile */
     .card {
@@ -745,6 +839,11 @@
     transform: none !important;
     box-shadow: none !important;
     border: none !important;
+  }
+
+  /* Hide connecting lines on mobile - cards are centered and stacked */
+  .timeline-item::before {
+    display: none !important;
   }
 }
 
