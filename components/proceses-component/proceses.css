@@ -99,7 +99,7 @@
   position: absolute;
   left: 50%;
   top: 9.25rem; /* Start below the icon (2.5rem / 2 = 1.25rem) */
-  width: 3px;
+  width: 30px;
   height: calc(100% - 1.25rem + 1.5rem);
   transform: translateX(-50%);
   z-index: 0;
