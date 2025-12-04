@@ -22,7 +22,16 @@
 
 /* VERTICAL LINE */
 .timeline-line {
-  display: none;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(178, 152, 255, 0.2);
+  opacity: 0.35;
+  border-radius: 4px;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 .timeline-item.background {
   padding-top: 140px;
@@ -95,7 +104,12 @@
 
 /* PROGRESS LINE CONTAINER - Bizee.com style, adapted for centered timeline */
 .timeline-progress-line-container {
-  display: none;
+  position: absolute;
+  left: 50%;
+  width: 5px;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* For all items except last, connect from icon center bottom to next icon center top */
@@ -209,10 +223,6 @@
 }
 
 .timeline-item.background > .timeline-dot {
-  display: none;
-}
-
-.timeline-item.background > .timeline-icon-container {
   display: none;
 }
 
@@ -341,7 +351,9 @@
   border-radius: 10px;
 }
 .backImage{
-  display: none;
+  width: 100%;
+  background-color: black;
+  position: relative;
 }
 .item{
   position: absolute;
@@ -824,7 +836,16 @@
 
 /* VERTICAL LINE */
 .timeline-line {
-  display: none;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(178, 152, 255, 0.2);
+  opacity: 0.35;
+  border-radius: 4px;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 .timeline-item.background {
   padding-top: 140px;
@@ -897,7 +918,12 @@
 
 /* PROGRESS LINE CONTAINER - Bizee.com style, adapted for centered timeline */
 .timeline-progress-line-container {
-  display: none;
+  position: absolute;
+  left: 50%;
+  width: 5px;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* For all items except last, connect from icon center bottom to next icon center top */
@@ -943,27 +969,7 @@
   display: none;
 }
 
-/* CONNECTING LINES FROM ICONS TO CARDS */
-.timeline-item::before {
-  display: none;
-}
-
-/* Left items: line from icon (center) to right edge of left card */
-/* Cards are 42% wide, with 6% padding on left items, card right edge is at ~48% */
-.timeline-item.left::before {
-  display: none;
-}
-
-/* Right items: line from icon (center) to left edge of right card */
-/* Cards are 42% wide, with 6% padding on right items, card left edge is at ~52% */
-.timeline-item.right::before {
-  display: none;
-}
-
-/* Enhanced line on hover */
-.timeline-item:hover::before {
-  display: none;
-}
+/* CONNECTING LINES FROM ICONS TO CARDS - REMOVED */
 
 /* ICON CONTAINER - Bizee.com style, positioned at vertical center */
 .timeline-icon-container {
@@ -1033,10 +1039,6 @@
 }
 
 .timeline-item.background > .timeline-dot {
-  display: none;
-}
-
-.timeline-item.background > .timeline-icon-container {
   display: none;
 }
 
@@ -1165,7 +1167,9 @@
   border-radius: 10px;
 }
 .backImage{
-  display: none;
+  width: 100%;
+  background-color: black;
+  position: relative;
 }
 .item{
   position: absolute;
@@ -1430,14 +1434,7 @@
     right: auto;
   }
 
-  /* Adjust connecting lines for tablet - cards are 38% wide, positioned similarly */
-  .timeline-item.left::before {
-    right: 47%; /* Adjusted for 38% card width with padding */
-  }
-
-  .timeline-item.right::before {
-    left: 53%; /* Adjusted for 38% card width with padding */
-  }
+  /* Connecting lines removed */
 }
 
 /* MOBILE */
