@@ -6,6 +6,7 @@ window.addEventListener("load", () => {
     initIntroObserver();
     initTimelineCardHover();
     initFeaturedImageParallax();
+    initWireframeHover();
   }, 300);
 });
 
@@ -371,4 +372,26 @@ function initFeaturedImageParallax() {
   
   // Initial call
   updateParallax();
+}
+
+function initWireframeHover() {
+  // Fallback for browsers without :has() selector support
+  const imageWrapper = document.querySelector(".main-content-image-wrapper");
+  const textBlock = document.querySelector(".wireframe-text-block");
+  const logoPlaceholder = document.querySelector(".wireframe-logo-placeholder");
+  const layout = document.querySelector(".wireframe-layout");
+  
+  if (!imageWrapper || !textBlock || !logoPlaceholder || !layout) return;
+  
+  // Check if browser supports :has() selector
+  if (!CSS.supports('selector(:has(*))')) {
+    // Add hover event listeners as fallback
+    imageWrapper.addEventListener('mouseenter', () => {
+      layout.classList.add('image-hovered');
+    });
+    
+    imageWrapper.addEventListener('mouseleave', () => {
+      layout.classList.remove('image-hovered');
+    });
+  }
 }

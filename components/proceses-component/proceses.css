@@ -3234,6 +3234,48 @@
   min-height: 500px;
 }
 
+/* Show text block and logo when hovering over the image wrapper */
+.wireframe-layout:has(.main-content-image-wrapper:hover) .wireframe-text-block {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) scale(1);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+              visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+.wireframe-layout:has(.main-content-image-wrapper:hover) .wireframe-logo-placeholder {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) scale(1);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
+              visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+/* Fallback for browsers without :has() support - use class-based hover */
+.wireframe-layout.image-hovered .wireframe-text-block {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) scale(1);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+              visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+.wireframe-layout.image-hovered .wireframe-logo-placeholder {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) scale(1);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
+              visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
 /* Left Text Block */
 .wireframe-text-block {
   position: relative;
@@ -3259,6 +3301,14 @@
     2% 96%,
     0% 88%
   );
+  /* Hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-40px) scale(0.9);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+              visibility 0s linear 0.3s;
+  pointer-events: none;
 }
 
 .text-block-content {
@@ -3306,12 +3356,16 @@
 .wireframe-main-content {
   position: relative;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-content-image-wrapper {
   position: relative;
-  width: 100%;
+  width: 900px;
   height: 400px;
+  max-width: 100%;
   border-radius: 20px;
   overflow: hidden;
   border: 2px solid rgba(178, 152, 255, 0.3);
@@ -3618,6 +3672,14 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
+  /* Hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(40px) scale(0.9);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
+              visibility 0s linear 0.45s;
+  pointer-events: none;
 }
 
 .logo-circle {
@@ -3717,6 +3779,13 @@
     display: none;
   }
   
+  .main-content-image-wrapper {
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 900 / 400;
+    height: auto;
+  }
+  
   .timeline-item.left.background.visible {
     min-height: auto;
   }
@@ -3743,7 +3812,10 @@
   }
   
   .main-content-image-wrapper {
-    height: 400px;
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 900 / 400;
+    height: auto;
   }
   
   .main-content-image-wrapper:hover {
