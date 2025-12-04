@@ -380,18 +380,21 @@ function initWireframeHover() {
   const textBlock = document.querySelector(".wireframe-text-block");
   const logoPlaceholder = document.querySelector(".wireframe-logo-placeholder");
   const layout = document.querySelector(".wireframe-layout");
+  const body = document.body;
   
-  if (!imageWrapper || !textBlock || !logoPlaceholder || !layout) return;
+  if (!imageWrapper || !textBlock || !logoPlaceholder) return;
   
   // Check if browser supports :has() selector
   if (!CSS.supports('selector(:has(*))')) {
     // Add hover event listeners as fallback
     imageWrapper.addEventListener('mouseenter', () => {
-      layout.classList.add('image-hovered');
+      if (layout) layout.classList.add('image-hovered');
+      body.classList.add('image-hovered');
     });
     
     imageWrapper.addEventListener('mouseleave', () => {
-      layout.classList.remove('image-hovered');
+      if (layout) layout.classList.remove('image-hovered');
+      body.classList.remove('image-hovered');
     });
   }
 }

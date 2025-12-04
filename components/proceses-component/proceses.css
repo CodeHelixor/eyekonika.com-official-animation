@@ -3235,20 +3235,22 @@
 }
 
 /* Show text block and logo when hovering over the image wrapper */
+body:has(.main-content-image-wrapper:hover) .wireframe-text-block,
 .wireframe-layout:has(.main-content-image-wrapper:hover) .wireframe-text-block {
   opacity: 1;
   visibility: visible;
-  transform: translateX(0) scale(1);
+  transform: translateY(-50%) translateX(0) scale(1);
   transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
               transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
               visibility 0s linear 0s;
   pointer-events: auto;
 }
 
+body:has(.main-content-image-wrapper:hover) .wireframe-logo-placeholder,
 .wireframe-layout:has(.main-content-image-wrapper:hover) .wireframe-logo-placeholder {
   opacity: 1;
   visibility: visible;
-  transform: translateX(0) scale(1);
+  transform: translateY(-50%) translateX(0) scale(1);
   transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
               transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
               visibility 0s linear 0s;
@@ -3256,20 +3258,23 @@
 }
 
 /* Fallback for browsers without :has() support - use class-based hover */
+body.image-hovered .wireframe-text-block,
+body.image-hovered .wireframe-text-block,
 .wireframe-layout.image-hovered .wireframe-text-block {
   opacity: 1;
   visibility: visible;
-  transform: translateX(0) scale(1);
+  transform: translateY(-50%) translateX(0) scale(1);
   transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
               transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
               visibility 0s linear 0s;
   pointer-events: auto;
 }
 
+body.image-hovered .wireframe-logo-placeholder,
 .wireframe-layout.image-hovered .wireframe-logo-placeholder {
   opacity: 1;
   visibility: visible;
-  transform: translateX(0) scale(1);
+  transform: translateY(-50%) translateX(0) scale(1);
   transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
               transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
               visibility 0s linear 0s;
@@ -3278,11 +3283,19 @@
 
 /* Left Text Block */
 .wireframe-text-block {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  /* Center between screen left (0%) and image left edge (50% - 450px) */
+  /* Center point: (0% + (50% - 450px)) / 2 = 25% - 225px */
+  /* To center 300px block: (25% - 225px) - 150px = 25% - 375px */
+  left: calc(25% - 475px);
+  transform: translateY(-50%) translateX(-40px) scale(0.9);
+  width: 300px;
+  height: 400px;
   padding: 28px 24px;
   background: rgba(255, 255, 255, 0.06);
   border: 2px solid rgba(178, 152, 255, 0.25);
-  border-radius: 30px 18px 22px 28px;
+  border-radius: 0;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   box-shadow: 
@@ -3304,16 +3317,45 @@
   /* Hidden by default */
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-40px) scale(0.9);
   transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
               transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
               visibility 0s linear 0.3s;
   pointer-events: none;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .text-block-content {
   position: relative;
   z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-right: 4px;
+}
+
+/* Custom scrollbar for text block */
+.text-block-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.text-block-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+}
+
+.text-block-content::-webkit-scrollbar-thumb {
+  background: rgba(178, 152, 255, 0.4);
+  border-radius: 2px;
+}
+
+.text-block-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(178, 152, 255, 0.6);
 }
 
 .text-block-content p {
@@ -3354,11 +3396,21 @@
 
 /* Main Content Image Area */
 .wireframe-main-content {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+}
+
+.wireframe-main-content .main-content-image-wrapper {
+  pointer-events: auto;
 }
 
 .main-content-image-wrapper {
@@ -3667,7 +3719,13 @@
 
 /* Right Logo/Illustration Placeholder */
 .wireframe-logo-placeholder {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  /* Center between image right edge (50% + 450px) and screen right (100%) */
+  /* Center point: ((50% + 450px) + 100%) / 2 = 75% + 225px */
+  /* To center 220px logo: (75% + 225px) - 110px = 75% + 115px */
+  left: calc(75% + 165px);
+  transform: translateY(-50%) translateX(40px) scale(0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3675,7 +3733,6 @@
   /* Hidden by default */
   opacity: 0;
   visibility: hidden;
-  transform: translateX(40px) scale(0.9);
   transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
               transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s,
               visibility 0s linear 0.45s;
@@ -3684,8 +3741,8 @@
 
 .logo-circle {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   border: 3px solid rgba(178, 152, 255, 0.4);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
@@ -3743,10 +3800,31 @@
 }
 
 /* Wireframe UI Responsive Design */
+@media (max-width: 1400px) {
+  /* Maintain centered positioning - image still 900px */
+  .wireframe-text-block {
+    left: calc(25% - 375px);
+  }
+  
+  .wireframe-logo-placeholder {
+    left: calc(75% + 115px);
+  }
+}
+
 @media (max-width: 1200px) {
   .wireframe-layout {
     grid-template-columns: 1fr 2fr 1fr;
     gap: 24px;
+  }
+  
+  /* If image scales down, adjust positioning proportionally */
+  /* Assuming image might be ~800px: left edge at 50% - 400px */
+  .wireframe-text-block {
+    left: calc(25% - 350px); /* Adjusted for smaller image */
+  }
+  
+  .wireframe-logo-placeholder {
+    left: calc(75% + 90px); /* Adjusted for smaller image */
   }
   
   .logo-circle {
@@ -3757,22 +3835,47 @@
 
 @media (max-width: 1024px) {
   .wireframe-layout {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 30px;
     max-width: 700px;
   }
   
-  .wireframe-text-block {
-    order: 2;
+  .wireframe-logo-placeholder {
+    position: relative;
+    top: 140px;
+    left: auto;
+    transform: none;
+    order: 1;
+    align-self: center;
+    margin-bottom: 20px;
   }
   
   .wireframe-main-content {
-    order: 1;
+    order: 2;
+    position: relative;
+    top: 70px;
+    left: auto;
+    transform: none;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
   
-  .wireframe-logo-placeholder {
+  .wireframe-text-block {
+    position: relative;
+    top: 100px;
+    left: auto;
+    transform: none;
     order: 3;
-    justify-content: flex-start;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    min-height: 300px;
+    aspect-ratio: 300 / 400;
+    margin-top: auto;
+    align-self: center;
   }
   
   .text-block-connector {
@@ -3809,6 +3912,30 @@
   .wireframe-layout {
     gap: 24px;
     min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .wireframe-logo-placeholder {
+    position: relative;
+    top: 140px;
+    left: auto;
+    transform: none;
+    order: 1;
+    align-self: center;
+    margin-bottom: 20px;
+  }
+  
+  .wireframe-main-content {
+    position: relative;
+    top: 70px;
+    left: auto;
+    transform: none;
+    order: 2;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
   
   .main-content-image-wrapper {
@@ -3828,20 +3955,32 @@
   }
   
   .wireframe-text-block {
+    position: relative;
+    top: 100px;
+    left: auto;
+    transform: none;
+    order: 3;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    min-height: 300px;
+    aspect-ratio: 300 / 400;
     padding: 20px;
+    margin-top: auto;
+    align-self: center;
   }
   
   .text-block-content p {
     font-size: 0.875rem;
   }
   
-  .logo-circle {
-    width: 160px;
-    height: 160px;
-  }
-  
   .logo-text {
     font-size: 1.25rem;
+  }
+  
+  .logo-circle {
+    width: 100px;
+    height: 100px;
   }
   
   .timeline-item.left.background.visible {
