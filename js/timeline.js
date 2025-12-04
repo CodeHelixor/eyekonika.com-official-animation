@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
     initSidebarScrollLock();
     initIntroObserver();
     initTimelineCardHover();
+    initFeaturedImageParallax();
   }, 300);
 });
 
@@ -295,4 +296,79 @@ function initTimelineCardHover() {
       preloadImg.src = img.src;
     }
   });
+}
+
+function initFeaturedImageParallax() {
+  const featuredImage = document.querySelector(".timeline-featured-image");
+  const featuredContainer = document.querySelector(".timeline-featured-image-container");
+  const backgroundItem = document.querySelector(".timeline-item.background.visible");
+  const backgroundLayers = document.querySelector(".background-animation-layers");
+  
+  if (!featuredImage || !featuredContainer) return;
+  
+  let ticking = false;
+  
+  function updateParallax() {
+    if (ticking) return;
+    
+    requestAnimationFrame(() => {
+      const rect = featuredContainer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const elementTop = rect.top;
+      const elementHeight = rect.height;
+      
+      // Calculate if element is in viewport
+      const viewportMiddle = windowHeight / 2;
+      const elementMiddle = elementTop + elementHeight / 2;
+      const distanceFromCenter = viewportMiddle - elementMiddle;
+      
+      // Parallax effect - move image slightly based on scroll position
+      const parallaxOffset = distanceFromCenter * 0.1; // Adjust multiplier for intensity
+      
+      // Only apply parallax when element is visible
+      if (rect.top < windowHeight && rect.bottom > 0) {
+        featuredImage.style.transform = `translateY(${parallaxOffset}px) scale(1)`;
+        
+        // Background parallax effect
+        if (backgroundItem && backgroundLayers) {
+          const bgParallaxOffset = distanceFromCenter * 0.05; // Slower parallax for background
+          backgroundLayers.style.transform = `translateY(${bgParallaxOffset}px)`;
+          
+          // Animate background gradient position
+          const gradientOverlay = backgroundLayers.querySelector(".bg-gradient-overlay");
+          if (gradientOverlay) {
+            const gradientOffset = (distanceFromCenter / windowHeight) * 20;
+            gradientOverlay.style.backgroundPosition = `${50 + gradientOffset}% 50%`;
+          }
+        }
+      }
+      
+      ticking = false;
+    });
+    
+    ticking = true;
+  }
+  
+  // Use Lenis scroll if available, otherwise use window scroll
+  const setupParallaxListener = () => {
+    if (window.lenis) {
+      window.lenis.on('scroll', updateParallax);
+    } else {
+      window.addEventListener("scroll", updateParallax, { passive: true });
+      // Try to switch to lenis if it becomes available later
+      const checkLenis = setInterval(() => {
+        if (window.lenis) {
+          window.removeEventListener("scroll", updateParallax);
+          window.lenis.on('scroll', updateParallax);
+          clearInterval(checkLenis);
+        }
+      }, 100);
+      setTimeout(() => clearInterval(checkLenis), 5000);
+    }
+  };
+  
+  setupParallaxListener();
+  
+  // Initial call
+  updateParallax();
 }
